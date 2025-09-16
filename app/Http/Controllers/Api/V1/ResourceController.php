@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ResourceResource;
 use App\Models\Resource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Exception;
 
@@ -32,13 +33,13 @@ class ResourceController extends Controller
                 'availability_slots' => $resource->availabilitySlots,
                 'bookings' => $resource->bookings,
             ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Resource not found',
                 'errors' => [
                     'id' => ['The selected resource ID is invalid.']
                 ]
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            ], Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching availability',
