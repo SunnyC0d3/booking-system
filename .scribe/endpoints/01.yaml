@@ -1,0 +1,466 @@
+name: Bookings
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/bookings
+    metadata:
+      groupName: Bookings
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a new booking.'
+      description: |-
+        Creates a booking for a specific resource and time slot. The system automatically:
+        - Validates booking is within allowed time window (min/max advance booking)
+        - Checks for availability conflicts and resource capacity
+        - Verifies no blackout dates (holidays, maintenance)
+        - Marks availability slots as unavailable for single-capacity resources
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      resource_id:
+        name: resource_id
+        description: 'The ID of the resource to book.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      start_time:
+        name: start_time
+        description: 'Start time in ISO 8601 format.'
+        required: true
+        example: '2025-09-18T10:00:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      end_time:
+        name: end_time
+        description: 'End time in ISO 8601 format.'
+        required: true
+        example: '2025-09-18T12:00:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      customer_info:
+        name: customer_info
+        description: 'Customer information object.'
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      customer_info.name:
+        name: customer_info.name
+        description: 'Customer name.'
+        required: true
+        example: 'John Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      customer_info.email:
+        name: customer_info.email
+        description: 'Customer email.'
+        required: true
+        example: john@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      resource_id: 1
+      start_time: '2025-09-18T10:00:00'
+      end_time: '2025-09-18T12:00:00'
+      customer_info:
+        name: 'John Doe'
+        email: john@example.com
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "resource": {"id": 1, "name": "Conference Room"},
+              "start_time": "2025-09-18T10:00:00",
+              "end_time": "2025-09-18T12:00:00",
+              "customer_info": {"name": "John Doe", "email": "john@example.com"},
+              "status": "pending"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "Validation failed",
+            "errors": {
+              "start_time": ["Booking time is outside allowed booking window"],
+              "availability": ["Resource is not available in this time slot"],
+              "conflict": ["Resource is fully booked for this interval"]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/bookings/{booking_id}'
+    metadata:
+      groupName: Bookings
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a single booking.'
+      description: |-
+        Retrieves detailed information about a specific booking including
+        resource details and current booking status.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      booking_id:
+        name: booking_id
+        description: 'The ID of the booking.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      booking:
+        name: booking
+        description: 'The ID of the booking.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      booking_id: 1
+      booking: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "resource": {"id": 1, "name": "Conference Room", "capacity": 8},
+              "start_time": "2025-09-18T10:00:00",
+              "end_time": "2025-09-18T12:00:00",
+              "customer_info": {"name": "John Doe", "email": "john@example.com"},
+              "status": "confirmed",
+              "created_at": "2025-09-17T15:30:00"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Booking not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'api/v1/bookings/{booking_id}'
+    metadata:
+      groupName: Bookings
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a booking.'
+      description: |-
+        Updates an existing booking. When changing time slots, the system:
+        - Validates new time is within booking window
+        - Checks new time slot availability and conflicts
+        - Restores old availability slots and marks new ones as unavailable
+        - Prevents updates to cancelled bookings
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      booking_id:
+        name: booking_id
+        description: 'The ID of the booking.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      booking:
+        name: booking
+        description: 'The ID of the booking to update.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      booking_id: 1
+      booking: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      start_time:
+        name: start_time
+        description: 'optional New start time in ISO 8601 format.'
+        required: false
+        example: '2025-09-18T10:30:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      end_time:
+        name: end_time
+        description: 'optional New end time in ISO 8601 format.'
+        required: false
+        example: '2025-09-18T12:30:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      customer_info:
+        name: customer_info
+        description: 'optional Updated customer information.'
+        required: false
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      customer_info.name:
+        name: customer_info.name
+        description: 'optional Updated customer name.'
+        required: false
+        example: 'Jane Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      customer_info.email:
+        name: customer_info.email
+        description: 'optional Updated customer email.'
+        required: false
+        example: jane@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      start_time: '2025-09-18T10:30:00'
+      end_time: '2025-09-18T12:30:00'
+      customer_info:
+        name: 'Jane Doe'
+        email: jane@example.com
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "resource": {"id": 1, "name": "Conference Room"},
+              "start_time": "2025-09-18T10:30:00",
+              "end_time": "2025-09-18T12:30:00",
+              "customer_info": {"name": "Jane Doe", "email": "jane@example.com"},
+              "status": "pending"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Booking not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "Validation failed",
+            "errors": {
+              "availability": ["Resource is not available in this new time slot"],
+              "conflict": ["Resource is fully booked for this interval"]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/bookings/{booking_id}'
+    metadata:
+      groupName: Bookings
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Cancel a booking.'
+      description: |-
+        Cancels an existing booking and restores availability slots for future bookings.
+        For single-capacity resources, the cancelled time slots become available again.
+        Cancelled bookings cannot be reactivated.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      booking_id:
+        name: booking_id
+        description: 'The ID of the booking.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      booking:
+        name: booking
+        description: 'The ID of the booking to cancel.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      booking_id: 1
+      booking: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "message": "Booking cancelled successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Booking not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -1,4 +1,4 @@
-name: 'Booking System'
+name: Resources
 description: ''
 endpoints:
   -
@@ -6,17 +6,21 @@ endpoints:
       - GET
     uri: api/v1/resources
     metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
+      groupName: Resources
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all resources.'
+      description: |-
+        Retrieves all bookable resources in the system with their basic information
+        including name, description, capacity, and availability rules.
       authenticated: true
       deprecated: false
       custom: []
     headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
@@ -24,12 +28,48 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Conference Room A",
+                "description": "Large conference room for up to 12 people",
+                "capacity": 12,
+                "availability_rules": {
+                  "monday": ["09:00-17:00"],
+                  "tuesday": ["09:00-17:00"],
+                  "wednesday": ["09:00-17:00"],
+                  "thursday": ["09:00-17:00"],
+                  "friday": ["09:00-17:00"]
+                }
+              },
+              {
+                "id": 2,
+                "name": "Meeting Room B",
+                "description": "Small meeting room for up to 4 people",
+                "capacity": 4,
+                "availability_rules": {
+                  "monday": ["08:00-20:00"],
+                  "tuesday": ["08:00-20:00"],
+                  "wednesday": ["08:00-20:00"],
+                  "thursday": ["08:00-20:00"],
+                  "friday": ["08:00-20:00"]
+                }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer your_generated_sanctum_token_here'
     controller: null
     method: null
     route: null
@@ -39,162 +79,184 @@ endpoints:
       - GET
     uri: 'api/v1/resources/{resource}/availability'
     metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
+      groupName: Resources
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get resource availability and bookings.'
+      description: |-
+        Retrieves availability information for a specific resource with flexible date querying.
+        Returns availability slots, existing bookings, and calendar-formatted data for frontend integration.
+
+        The endpoint supports multiple query modes:
+        - Single date: Returns availability for one specific date
+        - Date range: Returns availability between two dates
+        - Days ahead: Returns availability for N days starting from today
+        - Default: Returns today's availability if no parameters provided
       authenticated: true
       deprecated: false
       custom: []
     headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      resource:
+        name: resource
+        description: 'The ID of the resource.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      resource: 1
+    queryParameters:
+      date:
+        name: date
+        description: 'optional Specific date in Y-m-d format.'
+        required: false
+        example: '2025-09-18'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      from:
+        name: from
+        description: 'optional Start date for range in Y-m-d format.'
+        required: false
+        example: '2025-09-18'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      to:
+        name: to
+        description: 'optional End date for range in Y-m-d format.'
+        required: false
+        example: '2025-09-25'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      days:
+        name: days
+        description: 'optional Number of days from today (1-30).'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      date: '2025-09-18'
+      from: '2025-09-18'
+      to: '2025-09-25'
+      days: 7
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "resource": {
+              "id": 1,
+              "name": "Conference Room A",
+              "description": "Large conference room",
+              "capacity": 12
+            },
+            "date_range": {
+              "from": "2025-09-18",
+              "to": "2025-09-25"
+            },
+            "availability_slots": [
+              {
+                "id": 1,
+                "date": "2025-09-18",
+                "start_time": "09:00:00",
+                "end_time": "10:00:00",
+                "is_available": true
+              },
+              {
+                "id": 2,
+                "date": "2025-09-18",
+                "start_time": "10:00:00",
+                "end_time": "11:00:00",
+                "is_available": false
+              }
+            ],
+            "bookings": [
+              {
+                "id": 1,
+                "start_time": "2025-09-18T10:00:00",
+                "end_time": "2025-09-18T11:00:00",
+                "customer_info": {"name": "John Doe", "email": "john@example.com"},
+                "status": "confirmed"
+              }
+            ],
+            "calendar_view": [
+              {
+                "date": "2025-09-18",
+                "total_slots": 8,
+                "available_slots": 7,
+                "slots": [...]
+              },
+              {
+                "date": "2025-09-19",
+                "total_slots": 8,
+                "available_slots": 8,
+                "slots": [...]
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 200
+        content: |-
+          {
+            "resource": {"id": 1, "name": "Conference Room A"},
+            "date": "2025-09-18",
+            "availability_slots": [...],
+            "bookings": [...]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Resource not found",
+            "errors": {"id": ["The selected resource ID is invalid."]}
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "Invalid date format",
+            "errors": {"date": ["The date format is invalid. Use Y-m-d format."]}
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
-    uri: api/v1/bookings
-    metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/v1/bookings/{booking_id}'
-    metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - PUT
-    uri: 'api/v1/bookings/{booking_id}'
-    metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/bookings/{booking_id}'
-    metadata:
-      groupName: 'Booking System'
-      groupDescription: null
-      subgroup: null
-      subgroupDescription: null
-      title: null
-      description: null
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+      - 'Bearer your_generated_sanctum_token_here'
     controller: null
     method: null
     route: null

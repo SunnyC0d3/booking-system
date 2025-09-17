@@ -88,36 +88,6 @@ return [
         'faker_seed' => 1234,
         'models_source' => ['factoryCreate', 'databaseFirst'],
     ],
-    'strategies' => [
-        'metadata' => [
-            \Knuckles\Scribe\Extracting\Strategies\Metadata\GetFromDocBlocks::class,
-            \Knuckles\Scribe\Extracting\Strategies\Metadata\GetFromMetadataAttributes::class,
-        ],
-        'headers' => [
-            \Knuckles\Scribe\Extracting\Strategies\Headers\GetFromRouteRules::class,
-        ],
-        'urlParameters' => [
-            \Knuckles\Scribe\Extracting\Strategies\UrlParameters\GetFromLaravelAPI::class,
-            \Knuckles\Scribe\Extracting\Strategies\UrlParameters\GetFromFormRequest::class,
-        ],
-        'queryParameters' => [
-            \Knuckles\Scribe\Extracting\Strategies\QueryParameters\GetFromFormRequest::class,
-            \Knuckles\Scribe\Extracting\Strategies\QueryParameters\GetFromInlineValidator::class,
-        ],
-        'bodyParameters' => [
-            \Knuckles\Scribe\Extracting\Strategies\BodyParameters\GetFromFormRequest::class,
-            \Knuckles\Scribe\Extracting\Strategies\BodyParameters\GetFromInlineValidator::class,
-        ],
-        'responses' => [
-            \Knuckles\Scribe\Extracting\Strategies\Responses\UseResponseAttributes::class,
-            \Knuckles\Scribe\Extracting\Strategies\Responses\UseApiResourceTags::class,
-            \Knuckles\Scribe\Extracting\Strategies\Responses\UseTransformerTags::class,
-            \Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls::class,
-        ],
-        'responseFields' => [
-            \Knuckles\Scribe\Extracting\Strategies\ResponseFields\GetFromResponseFieldAttribute::class,
-        ],
-    ],
     'database_connections_to_transact' => [config('database.default')],
     'fractal' => [
         'serializer' => null,
