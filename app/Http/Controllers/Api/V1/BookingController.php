@@ -26,13 +26,21 @@ class BookingController extends Controller
     /**
      * Create a new booking.
      *
+     * Creates a booking for a specific resource and time slot. The system automatically:
+     * - Validates booking is within allowed time window (min/max advance booking)
+     * - Checks for availability conflicts and resource capacity
+     * - Verifies no blackout dates (holidays, maintenance)
+     * - Marks availability slots as unavailable for single-capacity resources
+     *
      * @group Bookings
      * @authenticated
      *
-     * @bodyParam resource_id integer required The ID of the resource. Example: 1
+     * @bodyParam resource_id integer required The ID of the resource to book. Example: 1
      * @bodyParam start_time string required Start time in ISO 8601 format. Example: 2025-09-18T10:00:00
      * @bodyParam end_time string required End time in ISO 8601 format. Example: 2025-09-18T12:00:00
-     * @bodyParam customer_info string Customer info. Example: John Doe
+     * @bodyParam customer_info object required Customer information object.
+     * @bodyParam customer_info.name string required Customer name. Example: John Doe
+     * @bodyParam customer_info.email string required Customer email. Example: john@example.com
      *
      * @response 201 {
      *   "data": {
@@ -40,14 +48,22 @@ class BookingController extends Controller
      *     "resource": {"id": 1, "name": "Conference Room"},
      *     "start_time": "2025-09-18T10:00:00",
      *     "end_time": "2025-09-18T12:00:00",
-     *     "customer_info": "John Doe",
-     *     "status": "confirmed"
+     *     "customer_info": {"name": "John Doe", "email": "john@example.com"},
+     *     "status": "pending"
      *   }
      * }
      *
      * @response 422 {
      *   "message": "Validation failed",
-     *   "errors": {"start_time": ["The start time field is required."]}
+     *   "errors": {
+     *     "start_time": ["Booking time is outside allowed booking window"],
+     *     "availability": ["Resource is not available in this time slot"],
+     *     "conflict": ["Resource is fully booked for this interval"]
+     *   }
+     * }
+     *
+     * @response 404 {
+     *   "message": "Resource not found"
      * }
      */
     public function store(StoreBookingRequest $request)
@@ -79,6 +95,9 @@ class BookingController extends Controller
     /**
      * Get a single booking.
      *
+     * Retrieves detailed information about a specific booking including
+     * resource details and current booking status.
+     *
      * @group Bookings
      * @authenticated
      *
@@ -87,17 +106,17 @@ class BookingController extends Controller
      * @response 200 {
      *   "data": {
      *     "id": 1,
-     *     "resource": {"id": 1, "name": "Conference Room"},
+     *     "resource": {"id": 1, "name": "Conference Room", "capacity": 8},
      *     "start_time": "2025-09-18T10:00:00",
      *     "end_time": "2025-09-18T12:00:00",
-     *     "customer_info": "John Doe",
-     *     "status": "confirmed"
+     *     "customer_info": {"name": "John Doe", "email": "john@example.com"},
+     *     "status": "confirmed",
+     *     "created_at": "2025-09-17T15:30:00"
      *   }
      * }
      *
      * @response 404 {
-     *   "message": "An error occurred",
-     *   "error": "Booking not found"
+     *   "message": "Booking not found"
      * }
      */
     public function show(Booking $booking)
@@ -115,13 +134,21 @@ class BookingController extends Controller
     /**
      * Update a booking.
      *
+     * Updates an existing booking. When changing time slots, the system:
+     * - Validates new time is within booking window
+     * - Checks new time slot availability and conflicts
+     * - Restores old availability slots and marks new ones as unavailable
+     * - Prevents updates to cancelled bookings
+     *
      * @group Bookings
      * @authenticated
      *
-     * @urlParam booking integer required The ID of the booking. Example: 1
-     * @bodyParam start_time string Start time in ISO 8601 format. Example: 2025-09-18T10:30:00
-     * @bodyParam end_time string End time in ISO 8601 format. Example: 2025-09-18T12:30:00
-     * @bodyParam customer_info string Customer info. Example: Jane Doe
+     * @urlParam booking integer required The ID of the booking to update. Example: 1
+     * @bodyParam start_time string optional New start time in ISO 8601 format. Example: 2025-09-18T10:30:00
+     * @bodyParam end_time string optional New end time in ISO 8601 format. Example: 2025-09-18T12:30:00
+     * @bodyParam customer_info object optional Updated customer information.
+     * @bodyParam customer_info.name string optional Updated customer name. Example: Jane Doe
+     * @bodyParam customer_info.email string optional Updated customer email. Example: jane@example.com
      *
      * @response 200 {
      *   "data": {
@@ -129,14 +156,21 @@ class BookingController extends Controller
      *     "resource": {"id": 1, "name": "Conference Room"},
      *     "start_time": "2025-09-18T10:30:00",
      *     "end_time": "2025-09-18T12:30:00",
-     *     "customer_info": "Jane Doe",
-     *     "status": "confirmed"
+     *     "customer_info": {"name": "Jane Doe", "email": "jane@example.com"},
+     *     "status": "pending"
      *   }
      * }
      *
      * @response 422 {
      *   "message": "Validation failed",
-     *   "errors": {"end_time": ["The end time must be after start time."]}
+     *   "errors": {
+     *     "availability": ["Resource is not available in this new time slot"],
+     *     "conflict": ["Resource is fully booked for this interval"]
+     *   }
+     * }
+     *
+     * @response 404 {
+     *   "message": "Booking not found"
      * }
      */
     public function update(UpdateBookingRequest $request, Booking $booking)
@@ -166,13 +200,21 @@ class BookingController extends Controller
     /**
      * Cancel a booking.
      *
+     * Cancels an existing booking and restores availability slots for future bookings.
+     * For single-capacity resources, the cancelled time slots become available again.
+     * Cancelled bookings cannot be reactivated.
+     *
      * @group Bookings
      * @authenticated
      *
-     * @urlParam booking integer required The ID of the booking. Example: 1
+     * @urlParam booking integer required The ID of the booking to cancel. Example: 1
      *
-     * @response 204 {
-     *   "message": "Booking cancelled"
+     * @response 200 {
+     *   "message": "Booking cancelled successfully"
+     * }
+     *
+     * @response 404 {
+     *   "message": "Booking not found"
      * }
      */
     public function destroy(Booking $booking)

@@ -19,6 +19,10 @@ return new class extends Migration
             $table->time('end_time');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
+
+            $table->index(['resource_id', 'date'], 'availability_resource_date_index');
+            $table->index('date', 'availability_date_index');
+            $table->index(['resource_id', 'date', 'is_available'], 'availability_resource_date_available_index');
         });
     }
 
