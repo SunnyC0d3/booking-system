@@ -11,6 +11,17 @@ use Exception;
 
 class ResourceController extends Controller
 {
+    /**
+     * List all resources.
+     *
+     * @group Resources
+     * @authenticated
+     *
+     * @response 200 [
+     *   {"id":1,"name":"Conference Room"},
+     *   {"id":2,"name":"Meeting Room"}
+     * ]
+     */
     public function index()
     {
         try {
@@ -23,6 +34,25 @@ class ResourceController extends Controller
         }
     }
 
+    /**
+     * Get resource availability and bookings.
+     *
+     * @group Resources
+     * @authenticated
+     *
+     * @urlParam resource integer required The ID of the resource. Example: 1
+     *
+     * @response 200 {
+     *   "resource":{"id":1,"name":"Conference Room"},
+     *   "availability_slots":[{"start_time":"10:00","end_time":"12:00"}],
+     *   "bookings":[{"id":1,"start_time":"2025-09-18T10:00","end_time":"2025-09-18T12:00"}]
+     * }
+     *
+     * @response 404 {
+     *   "message": "Resource not found",
+     *   "errors": {"id":["The selected resource ID is invalid."]}
+     * }
+     */
     public function availability($id)
     {
         try {
