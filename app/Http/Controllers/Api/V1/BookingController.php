@@ -220,7 +220,7 @@ class BookingController extends Controller
     public function destroy(Booking $booking)
     {
         try {
-            $booking->update(['status' => 'cancelled']);
+            $this->bookingService->cancelBooking($booking);
             return response()->json(['message' => 'Booking cancelled'], Response::HTTP_NO_CONTENT);
         } catch (Exception $e) {
             return response()->json([

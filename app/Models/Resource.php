@@ -35,8 +35,8 @@ class Resource extends Model
     public function getAvailabilityForDate(Carbon $date)
     {
         return $this->availabilitySlots()
-            ->where('date', $date->toDateString())
-            ->where('is_available', true)
+            ->forDate($date)
+            ->available()
             ->orderBy('start_time')
             ->get();
     }
@@ -44,22 +44,10 @@ class Resource extends Model
     public function getAvailabilityForDateRange(Carbon $startDate, Carbon $endDate)
     {
         return $this->availabilitySlots()
-            ->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
-            ->where('is_available', true)
+            ->forDateRange($startDate, $endDate)
+            ->available()
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();
-    }
-
-    public function hasAvailabilityForDay(string $dayOfWeek): bool
-    {
-        $rules = $this->availability_rules ?? config('booking.default_business_hours');
-        return isset($rules[strtolower($dayOfWeek)]) && !empty($rules[strtolower($dayOfWeek)]);
-    }
-
-    public function getAvailabilityRulesForDay(string $dayOfWeek): array
-    {
-        $rules = $this->availability_rules ?? config('booking.default_business_hours');
-        return $rules[strtolower($dayOfWeek)] ?? [];
     }
 }

@@ -43,11 +43,6 @@ class AvailabilitySlot extends Model
         return $query->where('resource_id', $resourceId);
     }
 
-    public function scopeFuture($query)
-    {
-        return $query->where('date', '>=', Carbon::today()->toDateString());
-    }
-
     public function scopeExpired($query, int $daysOld = 30)
     {
         $cutoffDate = Carbon::now()->subDays($daysOld);

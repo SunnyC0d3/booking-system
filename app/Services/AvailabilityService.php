@@ -56,7 +56,7 @@ class AvailabilityService
             $slotStart = $currentSlot->copy()->subMinutes($slotDuration);
             $slotEnd = $currentSlot->copy();
 
-            if ($this->slotExists($resourceId, $date->toDateString(), $slotStart->format('H:i:s'), $slotEnd->format('H:i:s'))) {
+            if ($this->slotExists($resourceId, $date, $slotStart->format('H:i:s'), $slotEnd->format('H:i:s'))) {
                 continue;
             }
 
@@ -74,10 +74,10 @@ class AvailabilityService
         return $slotsCreated;
     }
 
-    private function slotExists(int $resourceId, string $date, string $startTime, string $endTime): bool
+    private function slotExists(int $resourceId, Carbon $date, string $startTime, string $endTime): bool
     {
-        return AvailabilitySlot::where('resource_id', $resourceId)
-            ->where('date', $date)
+        return AvailabilitySlot::forResource($resourceId)
+            ->forDate($date)
             ->where('start_time', $startTime)
             ->where('end_time', $endTime)
             ->exists();
@@ -92,9 +92,9 @@ class AvailabilityService
 
     public function getAvailabilityForDateRange(Resource $resource, Carbon $startDate, Carbon $endDate): Collection
     {
-        return AvailabilitySlot::where('resource_id', $resource->id)
-            ->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
-            ->where('is_available', true)
+        return AvailabilitySlot::forResource($resource->id)
+            ->forDateRange($startDate, $endDate)
+            ->available()
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();
@@ -102,8 +102,6 @@ class AvailabilityService
 
     public function cleanupExpiredSlots(int $daysOld = 30): int
     {
-        $cutoffDate = Carbon::now()->subDays($daysOld);
-
-        return AvailabilitySlot::where('date', '<', $cutoffDate->toDateString())->delete();
+        return AvailabilitySlot::expired($daysOld)->delete();
     }
 }

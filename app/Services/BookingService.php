@@ -128,12 +128,15 @@ class BookingService
 
     private function hasAvailableSlots(Resource $resource, Carbon $start, Carbon $end): bool
     {
-        return AvailabilitySlot::where('resource_id', $resource->id)
-            ->where('date', $start->toDateString())
-            ->where('is_available', true)
-            ->where('start_time', '<=', $start->toTimeString())
-            ->where('end_time', '>=', $end->toTimeString())
-            ->exists();
+        $availableSlots = $resource->getAvailabilityForDate($start);
+
+        foreach ($availableSlots as $slot) {
+            if ($slot->start_time <= $start->toTimeString() && $slot->end_time >= $end->toTimeString()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function countOverlappingBookings(Resource $resource, Carbon $start, Carbon $end, ?int $excludeBookingId = null): int
@@ -160,8 +163,8 @@ class BookingService
 
     private function markSlotsUnavailable(Resource $resource, Carbon $start, Carbon $end): void
     {
-        AvailabilitySlot::where('resource_id', $resource->id)
-            ->where('date', $start->toDateString())
+        AvailabilitySlot::forResource($resource->id)
+            ->forDate($start)
             ->where('start_time', '>=', $start->toTimeString())
             ->where('end_time', '<=', $end->toTimeString())
             ->update(['is_available' => false]);
@@ -169,8 +172,8 @@ class BookingService
 
     private function markSlotsAvailable(Resource $resource, Carbon $start, Carbon $end): void
     {
-        AvailabilitySlot::where('resource_id', $resource->id)
-            ->where('date', $start->toDateString())
+        AvailabilitySlot::forResource($resource->id)
+            ->forDate($start)
             ->where('start_time', '>=', $start->toTimeString())
             ->where('end_time', '<=', $end->toTimeString())
             ->update(['is_available' => true]);

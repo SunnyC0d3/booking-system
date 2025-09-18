@@ -27,11 +27,6 @@ class BlackoutDate extends Model
         return $this->belongsTo(Resource::class);
     }
 
-    public function scopeGlobal($query)
-    {
-        return $query->whereNull('resource_id');
-    }
-
     public function scopeForResource($query, $resourceId)
     {
         return $query->where(function ($q) use ($resourceId) {
