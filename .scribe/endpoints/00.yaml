@@ -23,85 +23,8 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      search:
-        name: search
-        description: 'optional Search term to filter by name or description.'
-        required: false
-        example: '"Conference"'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      capacity_min:
-        name: capacity_min
-        description: 'optional Minimum capacity filter.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      capacity_max:
-        name: capacity_max
-        description: 'optional Maximum capacity filter.'
-        required: false
-        example: 20
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      sort_by:
-        name: sort_by
-        description: 'optional Field to sort by (handled by ResourceIndexRequest).'
-        required: false
-        example: '"name"'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      sort_direction:
-        name: sort_direction
-        description: 'optional Sort direction (handled by ResourceIndexRequest).'
-        required: false
-        example: '"asc"'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      per_page:
-        name: per_page
-        description: 'optional Items per page for pagination.'
-        required: false
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      page:
-        name: page
-        description: 'optional Page number for pagination.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanQueryParameters:
-      search: '"Conference"'
-      capacity_min: 4
-      capacity_max: 20
-      sort_by: '"name"'
-      sort_direction: '"asc"'
-      per_page: 10
-      page: 1
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters:
       per_page:
         name: per_page
@@ -157,7 +80,7 @@ endpoints:
         name: sort_by
         description: ''
         required: false
-        example: capacity
+        example: created_at
         type: string
         enumValues:
           - name
@@ -171,7 +94,7 @@ endpoints:
         name: sort_direction
         description: ''
         required: false
-        example: asc
+        example: desc
         type: string
         enumValues:
           - asc
@@ -185,8 +108,8 @@ endpoints:
       search: gzmi
       capacity_min: 43
       capacity_max: 16
-      sort_by: capacity
-      sort_direction: asc
+      sort_by: created_at
+      sort_direction: desc
     fileParameters: []
     responses:
       -
@@ -263,62 +186,18 @@ endpoints:
     urlParameters:
       resource:
         name: resource
-        description: 'The ID of the resource.'
+        description: 'The resource.'
         required: true
-        example: 1
-        type: integer
+        example: architecto
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      resource: 1
-    queryParameters:
-      date:
-        name: date
-        description: 'optional Specific date in Y-m-d format.'
-        required: false
-        example: '2025-09-18'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      from:
-        name: from
-        description: 'optional Start date for range in Y-m-d format.'
-        required: false
-        example: '2025-09-18'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      to:
-        name: to
-        description: 'optional End date for range in Y-m-d format.'
-        required: false
-        example: '2025-09-25'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      days:
-        name: days
-        description: 'optional Number of days from today (1-30).'
-        required: false
-        example: 7
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanQueryParameters:
-      date: '2025-09-18'
-      from: '2025-09-18'
-      to: '2025-09-25'
-      days: 7
+      resource: architecto
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters:
       date:
         name: date

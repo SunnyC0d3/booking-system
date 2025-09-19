@@ -127,7 +127,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 19, 2025 at 5:22 PM UTC</li>
+        <li>Last updated: September 19, 2025 at 6:00 PM UTC</li>
     </ul>
 </div>
 
@@ -188,7 +188,7 @@ including name, description, capacity, and availability rules.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://booking-system.com/api/v1/resources?search=%22Conference%22&amp;capacity_min=4&amp;capacity_max=20&amp;sort_by=%22name%22&amp;sort_direction=%22asc%22&amp;per_page=10&amp;page=1" \
+    --get "http://booking-system.com/api/v1/resources" \
     --header "Authorization: Bearer Bearer {YOUR_SANCTUM_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -198,8 +198,8 @@ including name, description, capacity, and availability rules.</p>
     \"search\": \"gzmi\",
     \"capacity_min\": 43,
     \"capacity_max\": 16,
-    \"sort_by\": \"capacity\",
-    \"sort_direction\": \"asc\"
+    \"sort_by\": \"created_at\",
+    \"sort_direction\": \"desc\"
 }"
 </code></pre></div>
 
@@ -208,18 +208,6 @@ including name, description, capacity, and availability rules.</p>
     <pre><code class="language-javascript">const url = new URL(
     "http://booking-system.com/api/v1/resources"
 );
-
-const params = {
-    "search": ""Conference"",
-    "capacity_min": "4",
-    "capacity_max": "20",
-    "sort_by": ""name"",
-    "sort_direction": ""asc"",
-    "per_page": "10",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer Bearer {YOUR_SANCTUM_TOKEN}",
@@ -233,8 +221,8 @@ let body = {
     "search": "gzmi",
     "capacity_min": 43,
     "capacity_max": 16,
-    "sort_by": "capacity",
-    "sort_direction": "asc"
+    "sort_by": "created_at",
+    "sort_direction": "desc"
 };
 
 fetch(url, {
@@ -255,23 +243,14 @@ $response = $client-&gt;get(
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
-        'query' =&gt; [
-            'search' =&gt; '"Conference"',
-            'capacity_min' =&gt; '4',
-            'capacity_max' =&gt; '20',
-            'sort_by' =&gt; '"name"',
-            'sort_direction' =&gt; '"asc"',
-            'per_page' =&gt; '10',
-            'page' =&gt; '1',
-        ],
         'json' =&gt; [
             'per_page' =&gt; 1,
             'page' =&gt; 22,
             'search' =&gt; 'gzmi',
             'capacity_min' =&gt; 43,
             'capacity_max' =&gt; 16,
-            'sort_by' =&gt; 'capacity',
-            'sort_direction' =&gt; 'asc',
+            'sort_by' =&gt; 'created_at',
+            'sort_direction' =&gt; 'desc',
         ],
     ]
 );
@@ -290,17 +269,8 @@ payload = {
     "search": "gzmi",
     "capacity_min": 43,
     "capacity_max": 16,
-    "sort_by": "capacity",
-    "sort_direction": "asc"
-}
-params = {
-  'search': '"Conference"',
-  'capacity_min': '4',
-  'capacity_max': '20',
-  'sort_by': '"name"',
-  'sort_direction': '"asc"',
-  'per_page': '10',
-  'page': '1',
+    "sort_by": "created_at",
+    "sort_direction": "desc"
 }
 headers = {
   'Authorization': 'Bearer Bearer {YOUR_SANCTUM_TOKEN}',
@@ -308,7 +278,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers, json=payload, params=params)
+response = requests.request('GET', url, headers=headers, json=payload)
 response.json()</code></pre></div>
 
 </span>
@@ -451,85 +421,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="search"                data-endpoint="GETapi-v1-resources"
-               value=""Conference""
-               data-component="query">
-    <br>
-<p>optional Search term to filter by name or description. Example: <code>"Conference"</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>capacity_min</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="capacity_min"                data-endpoint="GETapi-v1-resources"
-               value="4"
-               data-component="query">
-    <br>
-<p>optional Minimum capacity filter. Example: <code>4</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>capacity_max</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="capacity_max"                data-endpoint="GETapi-v1-resources"
-               value="20"
-               data-component="query">
-    <br>
-<p>optional Maximum capacity filter. Example: <code>20</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="sort_by"                data-endpoint="GETapi-v1-resources"
-               value=""name""
-               data-component="query">
-    <br>
-<p>optional Field to sort by (handled by ResourceIndexRequest). Example: <code>"name"</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>sort_direction</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="sort_direction"                data-endpoint="GETapi-v1-resources"
-               value=""asc""
-               data-component="query">
-    <br>
-<p>optional Sort direction (handled by ResourceIndexRequest). Example: <code>"asc"</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="per_page"                data-endpoint="GETapi-v1-resources"
-               value="10"
-               data-component="query">
-    <br>
-<p>optional Items per page for pagination. Example: <code>10</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="page"                data-endpoint="GETapi-v1-resources"
-               value="1"
-               data-component="query">
-    <br>
-<p>optional Page number for pagination. Example: <code>1</code></p>
-            </div>
-                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
@@ -591,10 +483,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-resources"
-               value="capacity"
+               value="created_at"
                data-component="body">
     <br>
-<p>Example: <code>capacity</code></p>
+<p>Example: <code>created_at</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>name</code></li> <li><code>capacity</code></li> <li><code>created_at</code></li> <li><code>updated_at</code></li></ul>
         </div>
@@ -604,10 +496,10 @@ Must be one of:
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-resources"
-               value="asc"
+               value="desc"
                data-component="body">
     <br>
-<p>Example: <code>asc</code></p>
+<p>Example: <code>desc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -635,7 +527,7 @@ Returns availability slots, existing bookings, and calendar-formatted data for f
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://booking-system.com/api/v1/resources/1/availability?date=2025-09-18&amp;from=2025-09-18&amp;to=2025-09-25&amp;days=7" \
+    --get "http://booking-system.com/api/v1/resources/architecto/availability" \
     --header "Authorization: Bearer Bearer {YOUR_SANCTUM_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -650,17 +542,8 @@ Returns availability slots, existing bookings, and calendar-formatted data for f
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://booking-system.com/api/v1/resources/1/availability"
+    "http://booking-system.com/api/v1/resources/architecto/availability"
 );
-
-const params = {
-    "date": "2025-09-18",
-    "from": "2025-09-18",
-    "to": "2025-09-25",
-    "days": "7",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer Bearer {YOUR_SANCTUM_TOKEN}",
@@ -684,7 +567,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://booking-system.com/api/v1/resources/1/availability';
+$url = 'http://booking-system.com/api/v1/resources/architecto/availability';
 $response = $client-&gt;get(
     $url,
     [
@@ -692,12 +575,6 @@ $response = $client-&gt;get(
             'Authorization' =&gt; 'Bearer Bearer {YOUR_SANCTUM_TOKEN}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
-        ],
-        'query' =&gt; [
-            'date' =&gt; '2025-09-18',
-            'from' =&gt; '2025-09-18',
-            'to' =&gt; '2025-09-25',
-            'days' =&gt; '7',
         ],
         'json' =&gt; [
             'date' =&gt; '2051-10-13',
@@ -715,18 +592,12 @@ print_r(json_decode((string) $body));</code></pre></div>
     <pre><code class="language-python">import requests
 import json
 
-url = 'http://booking-system.com/api/v1/resources/1/availability'
+url = 'http://booking-system.com/api/v1/resources/architecto/availability'
 payload = {
     "date": "2051-10-13",
     "from": "2021-10-13",
     "to": "2051-10-13",
     "days": 22
-}
-params = {
-  'date': '2025-09-18',
-  'from': '2025-09-18',
-  'to': '2025-09-25',
-  'days': '7',
 }
 headers = {
   'Authorization': 'Bearer Bearer {YOUR_SANCTUM_TOKEN}',
@@ -734,7 +605,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers, json=payload, params=params)
+response = requests.request('GET', url, headers=headers, json=payload)
 response.json()</code></pre></div>
 
 </span>
@@ -921,61 +792,16 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>resource</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="resource"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="1"
+                <input type="text" style="display: none"
+                              name="resource"                data-endpoint="GETapi-v1-resources--resource--availability"
+               value="architecto"
                data-component="url">
     <br>
-<p>The ID of the resource. Example: <code>1</code></p>
+<p>The resource. Example: <code>architecto</code></p>
             </div>
-                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="date"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2025-09-18"
-               data-component="query">
-    <br>
-<p>optional Specific date in Y-m-d format. Example: <code>2025-09-18</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>from</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="from"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2025-09-18"
-               data-component="query">
-    <br>
-<p>optional Start date for range in Y-m-d format. Example: <code>2025-09-18</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>to</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="to"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2025-09-25"
-               data-component="query">
-    <br>
-<p>optional End date for range in Y-m-d format. Example: <code>2025-09-25</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>days</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="days"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="7"
-               data-component="query">
-    <br>
-<p>optional Number of days from today (1-30). Example: <code>7</code></p>
-            </div>
-                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;

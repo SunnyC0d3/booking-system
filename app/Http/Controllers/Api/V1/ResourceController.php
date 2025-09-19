@@ -34,14 +34,6 @@ class ResourceController extends Controller
      * @group Resources
      * @authenticated
      *
-     * @queryParam search string optional Search term to filter by name or description. Example: "Conference"
-     * @queryParam capacity_min integer optional Minimum capacity filter. Example: 4
-     * @queryParam capacity_max integer optional Maximum capacity filter. Example: 20
-     * @queryParam sort_by string optional Field to sort by (handled by ResourceIndexRequest). Example: "name"
-     * @queryParam sort_direction string optional Sort direction (handled by ResourceIndexRequest). Example: "asc"
-     * @queryParam per_page integer optional Items per page for pagination. Example: 10
-     * @queryParam page integer optional Page number for pagination. Example: 1
-     *
      * @response 200 {
      *   "data": [
      *     {
@@ -126,12 +118,6 @@ class ResourceController extends Controller
      *
      * @group Resources
      * @authenticated
-     *
-     * @urlParam resource integer required The ID of the resource. Example: 1
-     * @queryParam date string optional Specific date in Y-m-d format. Example: 2025-09-18
-     * @queryParam from string optional Start date for range in Y-m-d format. Example: 2025-09-18
-     * @queryParam to string optional End date for range in Y-m-d format. Example: 2025-09-25
-     * @queryParam days integer optional Number of days from today (1-30). Example: 7
      *
      * @response 200 {
      *   "resource": {
