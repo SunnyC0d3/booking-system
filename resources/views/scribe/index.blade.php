@@ -127,7 +127,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 17, 2025 at 3:53 PM UTC</li>
+        <li>Last updated: September 19, 2025 at 5:22 PM UTC</li>
     </ul>
 </div>
 
@@ -188,10 +188,20 @@ including name, description, capacity, and availability rules.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://booking-system.com/api/v1/resources" \
+    --get "http://booking-system.com/api/v1/resources?search=%22Conference%22&amp;capacity_min=4&amp;capacity_max=20&amp;sort_by=%22name%22&amp;sort_direction=%22asc%22&amp;per_page=10&amp;page=1" \
     --header "Authorization: Bearer Bearer {YOUR_SANCTUM_TOKEN}" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
+    --header "Accept: application/json" \
+    --data "{
+    \"per_page\": 1,
+    \"page\": 22,
+    \"search\": \"gzmi\",
+    \"capacity_min\": 43,
+    \"capacity_max\": 16,
+    \"sort_by\": \"capacity\",
+    \"sort_direction\": \"asc\"
+}"
+</code></pre></div>
 
 
 <div class="javascript-example">
@@ -199,15 +209,38 @@ including name, description, capacity, and availability rules.</p>
     "http://booking-system.com/api/v1/resources"
 );
 
+const params = {
+    "search": ""Conference"",
+    "capacity_min": "4",
+    "capacity_max": "20",
+    "sort_by": ""name"",
+    "sort_direction": ""asc"",
+    "per_page": "10",
+    "page": "1",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
 const headers = {
     "Authorization": "Bearer Bearer {YOUR_SANCTUM_TOKEN}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
+let body = {
+    "per_page": 1,
+    "page": 22,
+    "search": "gzmi",
+    "capacity_min": 43,
+    "capacity_max": 16,
+    "sort_by": "capacity",
+    "sort_direction": "asc"
+};
+
 fetch(url, {
     method: "GET",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 
@@ -222,6 +255,24 @@ $response = $client-&gt;get(
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
+        'query' =&gt; [
+            'search' =&gt; '"Conference"',
+            'capacity_min' =&gt; '4',
+            'capacity_max' =&gt; '20',
+            'sort_by' =&gt; '"name"',
+            'sort_direction' =&gt; '"asc"',
+            'per_page' =&gt; '10',
+            'page' =&gt; '1',
+        ],
+        'json' =&gt; [
+            'per_page' =&gt; 1,
+            'page' =&gt; 22,
+            'search' =&gt; 'gzmi',
+            'capacity_min' =&gt; 43,
+            'capacity_max' =&gt; 16,
+            'sort_by' =&gt; 'capacity',
+            'sort_direction' =&gt; 'asc',
+        ],
     ]
 );
 $body = $response-&gt;getBody();
@@ -233,13 +284,31 @@ print_r(json_decode((string) $body));</code></pre></div>
 import json
 
 url = 'http://booking-system.com/api/v1/resources'
+payload = {
+    "per_page": 1,
+    "page": 22,
+    "search": "gzmi",
+    "capacity_min": 43,
+    "capacity_max": 16,
+    "sort_by": "capacity",
+    "sort_direction": "asc"
+}
+params = {
+  'search': '"Conference"',
+  'capacity_min': '4',
+  'capacity_max': '20',
+  'sort_by': '"name"',
+  'sort_direction': '"asc"',
+  'per_page': '10',
+  'page': '1',
+}
 headers = {
   'Authorization': 'Bearer Bearer {YOUR_SANCTUM_TOKEN}',
   'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers)
+response = requests.request('GET', url, headers=headers, json=payload, params=params)
 response.json()</code></pre></div>
 
 </span>
@@ -382,7 +451,167 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-resources"
+               value=""Conference""
+               data-component="query">
+    <br>
+<p>optional Search term to filter by name or description. Example: <code>"Conference"</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>capacity_min</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="capacity_min"                data-endpoint="GETapi-v1-resources"
+               value="4"
+               data-component="query">
+    <br>
+<p>optional Minimum capacity filter. Example: <code>4</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>capacity_max</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="capacity_max"                data-endpoint="GETapi-v1-resources"
+               value="20"
+               data-component="query">
+    <br>
+<p>optional Maximum capacity filter. Example: <code>20</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_by"                data-endpoint="GETapi-v1-resources"
+               value=""name""
+               data-component="query">
+    <br>
+<p>optional Field to sort by (handled by ResourceIndexRequest). Example: <code>"name"</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_direction</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_direction"                data-endpoint="GETapi-v1-resources"
+               value=""asc""
+               data-component="query">
+    <br>
+<p>optional Sort direction (handled by ResourceIndexRequest). Example: <code>"asc"</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-v1-resources"
+               value="10"
+               data-component="query">
+    <br>
+<p>optional Items per page for pagination. Example: <code>10</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-v1-resources"
+               value="1"
+               data-component="query">
+    <br>
+<p>optional Page number for pagination. Example: <code>1</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-v1-resources"
+               value="1"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Must not be greater than 100. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-v1-resources"
+               value="22"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Example: <code>22</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-resources"
+               value="gzmi"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Must be at least 2 characters. Example: <code>gzmi</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>capacity_min</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="capacity_min"                data-endpoint="GETapi-v1-resources"
+               value="43"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Example: <code>43</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>capacity_max</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="capacity_max"                data-endpoint="GETapi-v1-resources"
+               value="16"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Example: <code>16</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_by"                data-endpoint="GETapi-v1-resources"
+               value="capacity"
+               data-component="body">
+    <br>
+<p>Example: <code>capacity</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>name</code></li> <li><code>capacity</code></li> <li><code>created_at</code></li> <li><code>updated_at</code></li></ul>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>sort_direction</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_direction"                data-endpoint="GETapi-v1-resources"
+               value="asc"
+               data-component="body">
+    <br>
+<p>Example: <code>asc</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
+        </div>
+        </form>
 
                     <h2 id="resources-GETapi-v1-resources--resource--availability">Get resource availability and bookings.</h2>
 
@@ -409,7 +638,14 @@ Returns availability slots, existing bookings, and calendar-formatted data for f
     --get "http://booking-system.com/api/v1/resources/1/availability?date=2025-09-18&amp;from=2025-09-18&amp;to=2025-09-25&amp;days=7" \
     --header "Authorization: Bearer Bearer {YOUR_SANCTUM_TOKEN}" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
+    --header "Accept: application/json" \
+    --data "{
+    \"date\": \"2051-10-13\",
+    \"from\": \"2021-10-13\",
+    \"to\": \"2051-10-13\",
+    \"days\": 22
+}"
+</code></pre></div>
 
 
 <div class="javascript-example">
@@ -432,9 +668,17 @@ const headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "date": "2051-10-13",
+    "from": "2021-10-13",
+    "to": "2051-10-13",
+    "days": 22
+};
+
 fetch(url, {
     method: "GET",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 
@@ -455,6 +699,12 @@ $response = $client-&gt;get(
             'to' =&gt; '2025-09-25',
             'days' =&gt; '7',
         ],
+        'json' =&gt; [
+            'date' =&gt; '2051-10-13',
+            'from' =&gt; '2021-10-13',
+            'to' =&gt; '2051-10-13',
+            'days' =&gt; 22,
+        ],
     ]
 );
 $body = $response-&gt;getBody();
@@ -466,6 +716,12 @@ print_r(json_decode((string) $body));</code></pre></div>
 import json
 
 url = 'http://booking-system.com/api/v1/resources/1/availability'
+payload = {
+    "date": "2051-10-13",
+    "from": "2021-10-13",
+    "to": "2051-10-13",
+    "days": 22
+}
 params = {
   'date': '2025-09-18',
   'from': '2025-09-18',
@@ -478,7 +734,7 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers, params=params)
+response = requests.request('GET', url, headers=headers, json=payload, params=params)
 response.json()</code></pre></div>
 
 </span>
@@ -719,7 +975,52 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>optional Number of days from today (1-30). Example: <code>7</code></p>
             </div>
-                </form>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="date"                data-endpoint="GETapi-v1-resources--resource--availability"
+               value="2051-10-13"
+               data-component="body">
+    <br>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-10-13</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>from</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="from"                data-endpoint="GETapi-v1-resources--resource--availability"
+               value="2021-10-13"
+               data-component="body">
+    <br>
+<p>This field is required when <code>to</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date before or equal to <code>to</code>. Example: <code>2021-10-13</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>to</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="to"                data-endpoint="GETapi-v1-resources--resource--availability"
+               value="2051-10-13"
+               data-component="body">
+    <br>
+<p>This field is required when <code>from</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date after or equal to <code>from</code>. Example: <code>2051-10-13</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>days</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="days"                data-endpoint="GETapi-v1-resources--resource--availability"
+               value="22"
+               data-component="body">
+    <br>
+<p>Must be at least 1. Must not be greater than 30. Example: <code>22</code></p>
+        </div>
+        </form>
 
                 <h1 id="bookings">Bookings</h1>
 

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResourceAvailabilityRequest;
+use App\Http\Requests\ResourceIndexRequest;
 use App\Http\Resources\ResourceResource;
 use App\Models\Resource;
 use App\Services\AvailabilityService;
 use App\Services\CalendarService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
 
@@ -32,6 +33,14 @@ class ResourceController extends Controller
      *
      * @group Resources
      * @authenticated
+     *
+     * @queryParam search string optional Search term to filter by name or description. Example: "Conference"
+     * @queryParam capacity_min integer optional Minimum capacity filter. Example: 4
+     * @queryParam capacity_max integer optional Maximum capacity filter. Example: 20
+     * @queryParam sort_by string optional Field to sort by (handled by ResourceIndexRequest). Example: "name"
+     * @queryParam sort_direction string optional Sort direction (handled by ResourceIndexRequest). Example: "asc"
+     * @queryParam per_page integer optional Items per page for pagination. Example: 10
+     * @queryParam page integer optional Page number for pagination. Example: 1
      *
      * @response 200 {
      *   "data": [
@@ -64,10 +73,37 @@ class ResourceController extends Controller
      *   ]
      * }
      */
-    public function index()
+    public function index(ResourceIndexRequest $request)
     {
         try {
-            return ResourceResource::collection(Resource::all());
+            $query = Resource::query();
+
+            if ($request->filled('search')) {
+                $search = $request->input('search');
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            }
+
+            if ($request->filled('capacity_min')) {
+                $query->where('capacity', '>=', $request->input('capacity_min'));
+            }
+
+            if ($request->filled('capacity_max')) {
+                $query->where('capacity', '<=', $request->input('capacity_max'));
+            }
+
+            $sortBy = $request->input('sort_by', 'name');
+            $sortDirection = $request->input('sort_direction', 'asc');
+            $perPage = $request->input('per_page', 10);
+            $currentPage = $request->input('page', 1);
+
+            $query
+                ->orderBy($sortBy, $sortDirection)
+                ->paginate($perPage, ['*'], 'page', $currentPage);
+
+            return ResourceResource::collection($query->get());
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching resources',
@@ -166,11 +202,11 @@ class ResourceController extends Controller
      *   "errors": {"date": ["The date format is invalid. Use Y-m-d format."]}
      * }
      */
-    public function availability($id, Request $request)
+    public function availability($id, ResourceAvailabilityRequest $request)
     {
         try {
             $resource = Resource::findOrFail($id);
-            $dateRange = $this->parseDateRange($request);
+            $dateRange = $this->getDateRangeFromRequest($request);
 
             if ($dateRange['single_date']) {
                 $availabilitySlots = $resource->getAvailabilityForDate($dateRange['start']);
@@ -213,7 +249,6 @@ class ResourceController extends Controller
                 'bookings' => $bookings,
                 'calendar_view' => $calendarView,
             ]);
-
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Resource not found',
@@ -221,6 +256,13 @@ class ResourceController extends Controller
                     'id' => ['The selected resource ID is invalid.']
                 ]
             ], Response::HTTP_NOT_FOUND);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json([
+                'message' => 'Invalid date parameters',
+                'errors' => [
+                    'date' => [$e->getMessage()]
+                ]
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching availability',
@@ -229,51 +271,36 @@ class ResourceController extends Controller
         }
     }
 
-    /**
-     * Parse date range parameters from request.
-     *
-     * Handles multiple query parameter combinations:
-     * - ?date=2025-09-18 (single date)
-     * - ?from=2025-09-18&to=2025-09-25 (date range)
-     * - ?days=7 (next N days from today)
-     * - No parameters (defaults to today)
-     *
-     * @param Request $request
-     * @return array Contains start date, end date, and single_date flag
-     */
-    private function parseDateRange(Request $request): array
+    private function getDateRangeFromRequest(ResourceAvailabilityRequest $request): array
     {
-        if ($request->has('date')) {
-            $date = Carbon::createFromFormat('Y-m-d', $request->date);
+        if ($request->filled('date')) {
             return [
-                'start' => $date,
-                'end' => $date,
-                'single_date' => true
+                'single_date' => true,
+                'start' => Carbon::createFromFormat('Y-m-d', $request->input('date')),
+                'end' => Carbon::createFromFormat('Y-m-d', $request->input('date')),
             ];
         }
 
-        if ($request->has('from') && $request->has('to')) {
+        if ($request->filled('from') && $request->filled('to')) {
             return [
-                'start' => Carbon::createFromFormat('Y-m-d', $request->from),
-                'end' => Carbon::createFromFormat('Y-m-d', $request->to),
-                'single_date' => false
+                'single_date' => false,
+                'start' => Carbon::createFromFormat('Y-m-d', $request->input('from')),
+                'end' => Carbon::createFromFormat('Y-m-d', $request->input('to')),
             ];
         }
 
-        if ($request->has('days')) {
-            $days = (int) $request->days;
+        if ($request->filled('days')) {
             return [
+                'single_date' => false,
                 'start' => Carbon::today(),
-                'end' => Carbon::today()->addDays($days - 1),
-                'single_date' => false
+                'end' => Carbon::today()->addDays((int) $request->input('days') - 1),
             ];
         }
 
-        $today = Carbon::today();
         return [
-            'start' => $today,
-            'end' => $today,
-            'single_date' => true
+            'single_date' => true,
+            'start' => Carbon::today(),
+            'end' => Carbon::today(),
         ];
     }
 }
