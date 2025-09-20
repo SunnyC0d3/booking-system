@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AvailabilitySeeder::class,
             BookingSeeder::class,
             BlackoutDateSeeder::class,
+            EnquirySeeder::class
         ]);
     }
 }

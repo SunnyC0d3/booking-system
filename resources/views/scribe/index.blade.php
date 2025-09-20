@@ -127,7 +127,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 19, 2025 at 6:00 PM UTC</li>
+        <li>Last updated: September 20, 2025 at 7:23 PM UTC</li>
     </ul>
 </div>
 
@@ -199,7 +199,7 @@ including name, description, capacity, and availability rules.</p>
     \"capacity_min\": 43,
     \"capacity_max\": 16,
     \"sort_by\": \"created_at\",
-    \"sort_direction\": \"desc\"
+    \"sort_direction\": \"asc\"
 }"
 </code></pre></div>
 
@@ -222,7 +222,7 @@ let body = {
     "capacity_min": 43,
     "capacity_max": 16,
     "sort_by": "created_at",
-    "sort_direction": "desc"
+    "sort_direction": "asc"
 };
 
 fetch(url, {
@@ -250,7 +250,7 @@ $response = $client-&gt;get(
             'capacity_min' =&gt; 43,
             'capacity_max' =&gt; 16,
             'sort_by' =&gt; 'created_at',
-            'sort_direction' =&gt; 'desc',
+            'sort_direction' =&gt; 'asc',
         ],
     ]
 );
@@ -270,7 +270,7 @@ payload = {
     "capacity_min": 43,
     "capacity_max": 16,
     "sort_by": "created_at",
-    "sort_direction": "desc"
+    "sort_direction": "asc"
 }
 headers = {
   'Authorization': 'Bearer Bearer {YOUR_SANCTUM_TOKEN}',
@@ -496,10 +496,10 @@ Must be one of:
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="sort_direction"                data-endpoint="GETapi-v1-resources"
-               value="desc"
+               value="asc"
                data-component="body">
     <br>
-<p>Example: <code>desc</code></p>
+<p>Example: <code>asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
         </div>
@@ -532,9 +532,9 @@ Returns availability slots, existing bookings, and calendar-formatted data for f
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"date\": \"2051-10-13\",
-    \"from\": \"2021-10-13\",
-    \"to\": \"2051-10-13\",
+    \"date\": \"2051-10-14\",
+    \"from\": \"2021-10-14\",
+    \"to\": \"2051-10-14\",
     \"days\": 22
 }"
 </code></pre></div>
@@ -552,9 +552,9 @@ const headers = {
 };
 
 let body = {
-    "date": "2051-10-13",
-    "from": "2021-10-13",
-    "to": "2051-10-13",
+    "date": "2051-10-14",
+    "from": "2021-10-14",
+    "to": "2051-10-14",
     "days": 22
 };
 
@@ -577,9 +577,9 @@ $response = $client-&gt;get(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'date' =&gt; '2051-10-13',
-            'from' =&gt; '2021-10-13',
-            'to' =&gt; '2051-10-13',
+            'date' =&gt; '2051-10-14',
+            'from' =&gt; '2021-10-14',
+            'to' =&gt; '2051-10-14',
             'days' =&gt; 22,
         ],
     ]
@@ -594,9 +594,9 @@ import json
 
 url = 'http://booking-system.com/api/v1/resources/architecto/availability'
 payload = {
-    "date": "2051-10-13",
-    "from": "2021-10-13",
-    "to": "2051-10-13",
+    "date": "2051-10-14",
+    "from": "2021-10-14",
+    "to": "2051-10-14",
     "days": 22
 }
 headers = {
@@ -808,10 +808,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="date"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2051-10-13"
+               value="2051-10-14"
                data-component="body">
     <br>
-<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-10-13</code></p>
+<p>Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-10-14</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>from</code></b>&nbsp;&nbsp;
@@ -819,10 +819,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="from"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2021-10-13"
+               value="2021-10-14"
                data-component="body">
     <br>
-<p>This field is required when <code>to</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date before or equal to <code>to</code>. Example: <code>2021-10-13</code></p>
+<p>This field is required when <code>to</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date before or equal to <code>to</code>. Example: <code>2021-10-14</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>to</code></b>&nbsp;&nbsp;
@@ -830,10 +830,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="to"                data-endpoint="GETapi-v1-resources--resource--availability"
-               value="2051-10-13"
+               value="2051-10-14"
                data-component="body">
     <br>
-<p>This field is required when <code>from</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date after or equal to <code>from</code>. Example: <code>2051-10-13</code></p>
+<p>This field is required when <code>from</code> is present. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>today</code>. Must be a date after or equal to <code>from</code>. Example: <code>2051-10-14</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>days</code></b>&nbsp;&nbsp;
