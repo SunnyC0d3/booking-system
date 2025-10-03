@@ -23,8 +23,6 @@ class CalendarWebhookController extends Controller
     ) {
         $this->webhookHandler = $webhookHandler;
         $this->calendarSync = $calendarSync;
-
-        $this->middleware('microsoft.webhook');
     }
 
     /**

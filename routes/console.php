@@ -13,34 +13,41 @@ Artisan::command('inspire', function () {
 
 Schedule::command('availability:generate --days=90')
     ->dailyAt('02:00')
+    ->name('generate-availability-90-days')
     ->withoutOverlapping()
     ->runInBackground();
 
 Schedule::command('availability:cleanup --days=30')
     ->weeklyOn(0, '03:00')
+    ->name('cleanup-availability')
     ->withoutOverlapping();
 
 Schedule::command('availability:generate --year=' . (now()->year + 1))
     ->yearlyOn(12, 1, '01:00')
+    ->name('generate-next-year-availability')
     ->withoutOverlapping();
 
 Schedule::command('enquiry:sync-calendar --type=pending')
     ->everyFifteenMinutes()
+    ->name('sync-pending-enquiries')
     ->withoutOverlapping()
     ->runInBackground();
 
 Schedule::command('enquiry:sync-calendar --type=retry')
     ->hourly()
+    ->name('sync-retry-enquiries')
     ->withoutOverlapping()
     ->runInBackground();
 
 Schedule::command('enquiry:sync-calendar --type=maintenance')
     ->dailyAt('03:00')
+    ->name('sync-maintenance-enquiries')
     ->withoutOverlapping()
     ->runInBackground();
 
 Schedule::command('enquiry:cleanup')
     ->dailyAt('04:00')
+    ->name('cleanup-enquiries')
     ->withoutOverlapping()
     ->runInBackground();
 
@@ -62,8 +69,8 @@ Schedule::call(function () {
     }
 })
     ->dailyAt('05:00')
-    ->withoutOverlapping()
-    ->name('renew-webhook-subscriptions');
+    ->name('renew-webhook-subscriptions')
+    ->withoutOverlapping();
 
 Schedule::call(function () {
     try {
@@ -95,5 +102,5 @@ Schedule::call(function () {
     }
 })
     ->everySixHours()
-    ->withoutOverlapping()
-    ->name('monitor-sync-health');
+    ->name('monitor-sync-health')
+    ->withoutOverlapping();

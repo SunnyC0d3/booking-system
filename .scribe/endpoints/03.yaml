@@ -1,0 +1,490 @@
+name: 'Enquiry Actions'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/enquiries/{enquiry_id}/approve'
+    metadata:
+      groupName: 'Enquiry Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Approve an enquiry.'
+      description: |-
+        Approves an enquiry and optionally creates a calendar event.
+        Can be called via API or through secure email action links.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      enquiry_id:
+        name: enquiry_id
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      enquiry:
+        name: enquiry
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      enquiry_id: 16
+      enquiry: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      action_token:
+        name: action_token
+        description: 'Required when using email action links.'
+        required: false
+        example: abc123def456
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      create_calendar_event:
+        name: create_calendar_event
+        description: 'Whether to create a calendar event.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      calendar_notes:
+        name: calendar_notes
+        description: 'Additional notes for the calendar event.'
+        required: false
+        example: 'Confirmed booking for corporate event'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      decline_reason:
+        name: decline_reason
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      custom_message:
+        name: custom_message
+        description: 'Must not be greater than 1000 characters.'
+        required: false
+        example: z
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      action_token: abc123def456
+      create_calendar_event: true
+      calendar_notes: 'Confirmed booking for corporate event'
+      decline_reason: g
+      custom_message: z
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/enquiries/{enquiry_id}/decline'
+    metadata:
+      groupName: 'Enquiry Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Decline an enquiry.'
+      description: |-
+        Declines an enquiry and sends notification to the customer.
+        Can be called via API or through secure email action links.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      enquiry_id:
+        name: enquiry_id
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      enquiry:
+        name: enquiry
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      enquiry_id: 16
+      enquiry: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      action_token:
+        name: action_token
+        description: 'Required when using email action links.'
+        required: false
+        example: abc123def456
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      create_calendar_event:
+        name: create_calendar_event
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      calendar_notes:
+        name: calendar_notes
+        description: 'Must not be greater than 500 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      decline_reason:
+        name: decline_reason
+        description: 'Reason for declining the enquiry.'
+        required: false
+        example: 'Resource not available on requested date'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      custom_message:
+        name: custom_message
+        description: 'Custom message to include in decline email.'
+        required: false
+        example: 'Thank you for your interest. Unfortunately, we are fully booked on your preferred date.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      action_token: abc123def456
+      create_calendar_event: true
+      calendar_notes: 'n'
+      decline_reason: 'Resource not available on requested date'
+      custom_message: 'Thank you for your interest. Unfortunately, we are fully booked on your preferred date.'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/enquiries/{enquiry_id}/cancel'
+    metadata:
+      groupName: 'Enquiry Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Cancel an enquiry.'
+      description: 'Cancels an enquiry and removes any associated calendar events.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      enquiry_id:
+        name: enquiry_id
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      enquiry:
+        name: enquiry
+        description: 'The ID of the enquiry.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      enquiry_id: 16
+      enquiry: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      cancellation_reason:
+        name: cancellation_reason
+        description: 'Reason for cancellation.'
+        required: false
+        example: 'Customer requested cancellation'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      notify_customer:
+        name: notify_customer
+        description: 'Whether to notify the customer.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      cancellation_reason: 'Customer requested cancellation'
+      notify_customer: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/enquiries/actions/{token}/approve'
+    metadata:
+      groupName: 'Enquiry Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Handle action via secure token (from email links).'
+      description: |-
+        This endpoint handles enquiry actions when accessed through email action links.
+        It validates the secure token and performs the requested action.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      token:
+        name: token
+        description: 'The secure action token.'
+        required: true
+        example: abc123def456ghi789
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      action:
+        name: action
+        description: 'The action to perform (approve, decline).'
+        required: true
+        example: approve
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      token: abc123def456ghi789
+      action: approve
+    queryParameters:
+      decline_reason:
+        name: decline_reason
+        description: 'Reason for declining (only for decline action).'
+        required: false
+        example: 'Not available'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      custom_message:
+        name: custom_message
+        description: 'Custom message for customer.'
+        required: false
+        example: 'Thank you for your enquiry'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      decline_reason: 'Not available'
+      custom_message: 'Thank you for your enquiry'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 404
+        content: '{"error":"Invalid or expired action token"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/enquiries/actions/{token}/decline'
+    metadata:
+      groupName: 'Enquiry Actions'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Handle action via secure token (from email links).'
+      description: |-
+        This endpoint handles enquiry actions when accessed through email action links.
+        It validates the secure token and performs the requested action.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      token:
+        name: token
+        description: 'The secure action token.'
+        required: true
+        example: abc123def456ghi789
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      action:
+        name: action
+        description: 'The action to perform (approve, decline).'
+        required: true
+        example: approve
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      token: abc123def456ghi789
+      action: approve
+    queryParameters:
+      decline_reason:
+        name: decline_reason
+        description: 'Reason for declining (only for decline action).'
+        required: false
+        example: 'Not available'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      custom_message:
+        name: custom_message
+        description: 'Custom message for customer.'
+        required: false
+        example: 'Thank you for your enquiry'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      decline_reason: 'Not available'
+      custom_message: 'Thank you for your enquiry'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 404
+        content: '{"error":"Invalid or expired action token"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -1,0 +1,198 @@
+name: Webhooks
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/webhooks/microsoft
+    metadata:
+      groupName: Webhooks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Handle Microsoft Calendar webhook notifications.'
+      description: |-
+        This endpoint receives webhook notifications from Microsoft Graph API
+        when calendar events are created, updated, or deleted.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {webhook_secret}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/webhooks/microsoft/test
+    metadata:
+      groupName: Webhooks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Test webhook endpoint connectivity.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"message":"Webhook endpoint is accessible","timestamp":"2025-10-03T15:40:21.002184Z","url":"http:\/\/booking-system.com\/api\/v1\/webhooks\/microsoft\/test"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/webhooks/microsoft/status
+    metadata:
+      groupName: Webhooks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get webhook subscription status.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/webhooks/microsoft/subscribe
+    metadata:
+      groupName: Webhooks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create or refresh webhook subscription.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: api/v1/webhooks/microsoft/unsubscribe
+    metadata:
+      groupName: Webhooks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove webhook subscription.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer your_generated_sanctum_token_here'
+    controller: null
+    method: null
+    route: null
+    custom: []
