@@ -11,13 +11,13 @@ use App\Http\Controllers\Api\V1\CalendarWebhookController;
 Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/resources', [ResourceController::class, 'index']);
-        Route::get('/resources/{resource}/availability', [ResourceController::class, 'availability']);
+        Route::get('/resources', [ResourceController::class, 'index'])->name('api.v1.resources.index');
+        Route::get('/resources/{resource}/availability', [ResourceController::class, 'availability'])->name('api.v1.resources.availability');
 
-        Route::post('/bookings', [BookingController::class, 'store']);
-        Route::get('/bookings/{booking}', [BookingController::class, 'show']);
-        Route::put('/bookings/{booking}', [BookingController::class, 'update']);
-        Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+        Route::post('/bookings', [BookingController::class, 'store'])->name('api.v1.bookings.store');
+        Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('api.v1.bookings.show');
+        Route::put('/bookings/{booking}', [BookingController::class, 'update'])->name('api.v1.bookings.update');
+        Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('api.v1.bookings.destroy');
     });
 
     Route::post('enquiries', [EnquiryController::class, 'store'])->name('api.v1.enquiries.store');
